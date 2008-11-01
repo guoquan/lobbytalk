@@ -26,6 +26,9 @@ public class ServiceDispacher implements Commands {
 		case POST:
 			service = Services.getPostService();
 			break;
+		case NEWS:
+			service = Services.getNewsService();
+			break;
 		default:
 			session.getOut().writeCommand(INCOGITABLE);
 			return false;

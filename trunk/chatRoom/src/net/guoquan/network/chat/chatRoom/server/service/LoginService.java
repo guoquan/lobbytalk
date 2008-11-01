@@ -25,6 +25,7 @@ public class LoginService implements Service {
 		if(context.login(session)){
 			// if success, send session id
 			session.getOut().writeLong(session.getId());
+			session.getOut().writeLong(session.getUser().getUid());
 			logger.info("[" + user.getUid() + "] " + user.getUsername() + " logged in.");
 			return true;
 		}else{

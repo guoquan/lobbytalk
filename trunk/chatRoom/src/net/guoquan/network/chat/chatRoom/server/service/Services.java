@@ -16,4 +16,7 @@ public class Services {
 	public static Service getPostService(){
 		return PostService.getInstance();
 	}
+	public static Service getNewsService(){
+		return NewsService.getInstance();
+	}
 }

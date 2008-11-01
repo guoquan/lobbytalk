@@ -23,16 +23,8 @@ public class Session {
 		return user;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public long getId() {
 		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public void open(long id, User user) {
@@ -42,9 +34,6 @@ public class Session {
 	}
 
 	public void recover(Socket cs) throws IOException {
-		/*
-		 * this.id = id; this.user = user;
-		 */
 		this.cs = cs;
 
 		cs.setSoTimeout(timeout);
@@ -55,21 +44,19 @@ public class Session {
 	}
 
 	public void close() {
-		/*
-		 * this.id = 0; this.user = null;
-		 */
 		try {
 			in.close();
 			out.close();
 			cs.close();
 		} catch (IOException e) {
 			// do nothing as we just need to drop the io
-		}
-		in = null;
-		out = null;
-		cs = null;
+		} finally {
+			in = null;
+			out = null;
+			cs = null;
 
-		isOpened = false;
+			isOpened = false;
+		}
 	}
 
 	public Session(Socket cs, int timeout) throws IOException {

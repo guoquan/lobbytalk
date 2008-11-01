@@ -21,10 +21,10 @@ public class NewsService implements Service {
 		while(!queue.isEmpty()){
 			Message m = queue.poll();
 			session.getOut().writeLong(m.getFrom().getUid());
-			session.getOut().writeBoolean(null != m.getTo());
+			session.getOut().writeLong(null == m.getTo() ? 0 : m.getTo().getUid());
 			session.getOut().writeUTFLine(m.getMessage());
 			logger.debug("[" + m.getFrom().getUid() + "] to ["
-					+ m.getTo().getUid() + "] : {" + m.getMessage() + "}");
+					+ (null == m.getTo() ?  "ALL" : m.getTo().getUid()) + "] : {" + m.getMessage() + "}");
 		}
 		logger.info(queue.size() + " message(s) left in [" + session.getUser() + "]'s box.");
 		return true;

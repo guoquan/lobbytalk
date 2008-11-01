@@ -1,39 +1,40 @@
-package net.guoquan.network.chat.chatRoom.client.information;
+package net.guoquan.network.chat.chatRoom.client.context;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.guoquan.network.chat.chatRoom.client.ClientSession;
+import javax.security.auth.login.LoginException;
 
 public class UserList {
-	private ClientSession session;
+	private ClientSessionHandler handler;
 	private List<User> users;
 	private boolean autoSync;
 	private String regex;
 
-	public UserList(ClientSession session) {
+	public UserList(ClientSessionHandler handler) throws LoginException, IOException {
 		super();
-		this.session = session;
+		this.handler = handler;
 		autoSync = false;
 		regex = ".*";
 		sync();
 	}
 
-	public void autoSync() {
+	public void autoSync() throws LoginException, IOException {
 		if (autoSync) {
 			sync();
 		}
 	}
 
-	public void sync() {
-		users = session.users();
+	public void sync() throws LoginException, IOException {
+			users = handler.users();
 	}
 
 	public void applyFilter(String regex) {
 		this.regex = regex;
 	}
 
-	public List<User> getUsers() {
+	public List<User> getUsers() throws LoginException, IOException {
 		autoSync();
 		return users;
 	}

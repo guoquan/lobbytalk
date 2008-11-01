@@ -9,16 +9,18 @@ package net.guoquan.network.chat.chatRoom.client.UI;
 import java.awt.Color;
 import java.awt.Component;
 import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.security.auth.login.LoginException;
 import javax.swing.DefaultListModel;
 
-import net.guoquan.network.chat.chatRoom.client.ClientSession;
 import net.guoquan.network.chat.chatRoom.client.UI.component.MessageBox;
-import net.guoquan.network.chat.chatRoom.client.information.User;
-import net.guoquan.network.chat.chatRoom.client.information.UserList;
+import net.guoquan.network.chat.chatRoom.client.context.ClientSessionHandler;
+import net.guoquan.network.chat.chatRoom.client.context.Message;
+import net.guoquan.network.chat.chatRoom.client.context.User;
+import net.guoquan.network.chat.chatRoom.client.context.UserList;
 
 /**
  *
@@ -29,8 +31,9 @@ public class ClientGUI extends javax.swing.JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private ClientSession session;
+	private static final long serialVersionUID = 8645017509464698796L;
+
+	private ClientSessionHandler handler;
 	private Timer timer;
 
 	private UserList list;
@@ -38,8 +41,8 @@ public class ClientGUI extends javax.swing.JFrame {
 	private LoginDialog loginDialog;
 
 	/** Creates new form ClientGUI */
-	public ClientGUI(ClientSession session) {
-		this.session = session;
+	public ClientGUI(ClientSessionHandler handler) {
+		this.handler = handler;
 		initAheadComponents();
 		initComponents();
 		initOtherComponents();
@@ -47,7 +50,13 @@ public class ClientGUI extends javax.swing.JFrame {
 
 	private void initAheadComponents() {
 		timer = new Timer();
-		list = new UserList(session);
+		try {
+			list = new UserList(handler);
+		} catch (LoginException e) {
+			returnLogin();
+		} catch (IOException e) {
+			returnLogin();
+		}
 		filterOpen = false;
 	}
 
@@ -58,11 +67,30 @@ public class ClientGUI extends javax.swing.JFrame {
 			public void run() {
 				freshUserList();
 			}
-		}, 0, 5000);
+		}, 0, 10000);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				freshMessageBoxes();
+			}
+		}, 0, 3000);
+		try {
+			list.sync();
+		} catch (LoginException e) {
+			returnLogin();
+		} catch (IOException e) {
+			returnLogin();
+		}
 	}
 
 	private void freshUserList() {
-		list.sync();
+		try {
+			list.sync();
+		} catch (LoginException e) {
+			returnLogin();
+		} catch (IOException e) {
+			returnLogin();
+		}
 		if (filterOpen) {
 			list.applyFilter(jTextField1.getText() + ".*");
 		} else {
@@ -70,7 +98,64 @@ public class ClientGUI extends javax.swing.JFrame {
 		}
 		jList1.setListData(list.getUserArray());
 	}
-
+	private void freshMessageBoxes() {
+		try {
+			List<Message> messages = handler.news();
+			User from = null;
+			User to = null;
+			for(Message m : messages){
+				from = m.getFrom();
+				to = m.getTo();
+				if(null == m.getTo()){
+					// broadcast
+					((MessageBox)jTabbedPane1.getComponent(0)).post(m);
+				}else if(from.equals(handler.user())){
+					// out bound
+					MessageBox box = findUserBox(to);
+					while(null == box){
+						jTabbedPane1.addTab(to.getUsername(), null, new MessageBox(to), null);
+						box = findUserBox(to);
+					}
+					box.post(m);
+				}else{
+					// in bound
+					MessageBox box = findUserBox(from);
+					while(null == box){
+						jTabbedPane1.addTab(from.getUsername(), null, new MessageBox(from), null);
+						box = findUserBox(from);
+					}
+					box.post(m);
+				}
+			}
+		} catch (LoginException e) {
+			returnLogin();
+		} catch (IOException e) {
+			returnLogin();
+		}
+	}
+	private MessageBox findUserBox(User user) {
+		for (Component c : jTabbedPane1.getComponents()) {
+			User boxUser = ((MessageBox) c).getUser();
+			if (null != boxUser && boxUser.equals(user)) {
+				return (MessageBox) c;
+			}
+		}
+		return null;
+	}
+	public void setLoginDialog(LoginDialog loginDialog) {
+		this.loginDialog = loginDialog;
+	}
+	private void returnLogin(){
+		try {
+			handler.bye();
+		} catch (IOException e) {
+			// do nothing
+		} finally {
+			handler.close();
+			this.setVisible(false);
+			loginDialog.setVisible(true);
+		}
+	}
 	//GEN-BEGIN:initComponents
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
@@ -367,17 +452,7 @@ public class ClientGUI extends javax.swing.JFrame {
 	}
 
 	private void openMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
-		try {
-			session.bye();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			session.reset();
-			this.setVisible(false);
-			loginDialog.setVisible(true);
-		}
-
+		returnLogin();
 	}
 
 	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -394,15 +469,13 @@ public class ClientGUI extends javax.swing.JFrame {
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
-			session.post(((MessageBox) jTabbedPane1.getSelectedComponent())
+			handler.post(((MessageBox) jTabbedPane1.getSelectedComponent())
 					.getUser(), jEditorPane1.getText());
 			jEditorPane1.setText("");
 		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			returnLogin();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			returnLogin();
 		}
 	}
 
@@ -477,8 +550,5 @@ public class ClientGUI extends javax.swing.JFrame {
 
 	// End of variables declaration//GEN-END:variables
 
-	public void setLoginDialog(LoginDialog loginDialog) {
-		this.loginDialog = loginDialog;
-	}
 
 }
