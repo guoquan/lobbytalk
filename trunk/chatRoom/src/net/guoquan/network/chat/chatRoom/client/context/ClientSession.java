@@ -1,6 +1,7 @@
 package net.guoquan.network.chat.chatRoom.client.context;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import net.guoquan.network.chat.chatRoom.util.SocketReader;
@@ -11,8 +12,11 @@ public class ClientSession implements Session {
 	private User user;
 	private boolean isOpen;
 	private Socket socket;
+	private InetAddress host;
+	private int port;
 	private SocketReader in;
 	private SocketWriter out;
+	private int timeout;
 	public void close() {
 		try {
 			in.close();
@@ -28,16 +32,28 @@ public class ClientSession implements Session {
 			isOpen = false;	
 		}
 	}
-
 	public long getId() {
 		return id;
 	}
 
-	public SocketReader getIn() {
+	private Socket getSocket() throws IOException{
+		if(null == socket){
+			socket = new Socket(host, port);
+		}
+		return socket;
+	}
+	
+	public SocketReader getIn() throws IOException {
+		if(null == in){
+			in = new SocketReader(getSocket().getInputStream());
+		}
 		return in;
 	}
 
-	public SocketWriter getOut() {
+	public SocketWriter getOut() throws IOException {
+		if(null == out){
+			out = new SocketWriter(getSocket().getOutputStream());
+		}
 		return out;
 	}
 
@@ -58,8 +74,9 @@ public class ClientSession implements Session {
 	public ClientSession(Socket socket) throws IOException {
 		super();
 		this.socket = socket;
-		in = new SocketReader(this.socket.getInputStream());
-		out = new SocketWriter(this.socket.getOutputStream());
+		host = socket.getInetAddress();
+		port = socket.getPort();
+		timeout = socket.getSoTimeout();
 	}
 
 }

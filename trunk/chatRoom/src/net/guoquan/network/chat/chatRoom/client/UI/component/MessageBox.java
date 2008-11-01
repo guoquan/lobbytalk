@@ -6,7 +6,10 @@
 
 package net.guoquan.network.chat.chatRoom.client.UI.component;
 
-import javax.swing.text.BadLocationException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
 
 import net.guoquan.network.chat.chatRoom.client.context.Message;
 import net.guoquan.network.chat.chatRoom.client.context.User;
@@ -21,43 +24,44 @@ public class MessageBox extends javax.swing.JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private User user;
+	private boolean closable = true;
+	
+	private List<String> lines;
 
 	/** Creates new form MessageBox */
-	public MessageBox() {
-		initComponents();
-	}
 
 	public MessageBox(User user) {
 		this.user = user;
 		this.closable = true;
+		lines = new ArrayList<String>(0);
 		initComponents();
 	}
 
 	public MessageBox(User user, boolean closable) {
 		this.user = user;
 		this.closable = closable;
+		lines = new ArrayList<String>(0);
 		initComponents();
 	}
-	
-	public void post(Message message){
-		try {
-			jTextPane1.getDocument().insertString(0, "a", null);
-		} catch (BadLocationException e) {
-			// do nothing
-		}
+
+	public void post(Message message) {
+		lines.add(message.toString());
+		jList1.setListData(lines.toArray());
+	}
+
+	public User getUser() {
+		return user;
 	}
 
 	//GEN-BEGIN:initComponents
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
 
-		jScrollPane1 = new javax.swing.JScrollPane();
-		jTextPane1 = new javax.swing.JTextPane();
 		jButton1 = new javax.swing.JButton();
 		jLabel1 = new javax.swing.JLabel();
-
-		jTextPane1.setEditable(false);
-		jScrollPane1.setViewportView(jTextPane1);
+		jScrollPane1 = new javax.swing.JScrollPane();
+		jList1 = new javax.swing.JList();
 
 		jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource(
 				"/javax/swing/plaf/metal/icons/ocean/paletteClose.gif"))); // NOI18N
@@ -70,6 +74,9 @@ public class MessageBox extends javax.swing.JPanel {
 
 		jLabel1.setText(null == user ? "Lobby" : "Chat with "
 				+ user.getUsername());
+
+		jList1.setModel(new DefaultListModel());
+		jScrollPane1.setViewportView(jList1);
 
 		org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(
 				this);
@@ -120,13 +127,8 @@ public class MessageBox extends javax.swing.JPanel {
 	// Variables declaration - do not modify
 	private javax.swing.JButton jButton1;
 	private javax.swing.JLabel jLabel1;
+	private javax.swing.JList jList1;
 	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JTextPane jTextPane1;
 	// End of variables declaration//GEN-END:variables
-	private User user;
-	private boolean closable = true;
 
-	public User getUser() {
-		return user;
-	}
 }

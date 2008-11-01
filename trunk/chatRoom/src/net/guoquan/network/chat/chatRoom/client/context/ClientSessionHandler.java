@@ -49,7 +49,7 @@ public class ClientSessionHandler implements Commands {
 	}
 
 	public synchronized boolean recover(long sessionId) throws IOException {
-		// TODO Auto-generated method stub
+		// TODO recover still not supported
 		return false;
 	}
 

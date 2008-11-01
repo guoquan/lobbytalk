@@ -74,13 +74,7 @@ public class ClientGUI extends javax.swing.JFrame {
 				freshMessageBoxes();
 			}
 		}, 0, 3000);
-		try {
-			list.sync();
-		} catch (LoginException e) {
-			returnLogin();
-		} catch (IOException e) {
-			returnLogin();
-		}
+		freshUserList();
 	}
 
 	private void freshUserList() {
@@ -98,34 +92,52 @@ public class ClientGUI extends javax.swing.JFrame {
 		}
 		jList1.setListData(list.getUserArray());
 	}
+
 	private void freshMessageBoxes() {
 		try {
 			List<Message> messages = handler.news();
 			User from = null;
 			User to = null;
-			for(Message m : messages){
+			for (Message m : messages) {
 				from = m.getFrom();
 				to = m.getTo();
-				if(null == m.getTo()){
+
+				MessageBox box = (MessageBox) jTabbedPane1.getComponent(0);
+				if (null == m.getTo()) {
 					// broadcast
-					((MessageBox)jTabbedPane1.getComponent(0)).post(m);
-				}else if(from.equals(handler.user())){
-					// out bound
-					MessageBox box = findUserBox(to);
-					while(null == box){
-						jTabbedPane1.addTab(to.getUsername(), null, new MessageBox(to), null);
+					if (!from.equals(handler.user()))
+						jTabbedPane1
+								.setIconAt(
+										jTabbedPane1.indexOfComponent(box),
+										new javax.swing.ImageIcon(
+												getClass()
+														.getResource(
+																"/javax/swing/plaf/metal/icons/ocean/warning.png")));
+				} else if (from.equals(handler.user())) {
+					// out bound 
+					box = findUserBox(to);
+					while (null == box) {
+						jTabbedPane1.addTab(to.getUsername(), null,
+								new MessageBox(to), null);
 						box = findUserBox(to);
 					}
-					box.post(m);
-				}else{
+				} else {
 					// in bound
-					MessageBox box = findUserBox(from);
-					while(null == box){
-						jTabbedPane1.addTab(from.getUsername(), null, new MessageBox(from), null);
+					box = findUserBox(from);
+					while (null == box) {
+						jTabbedPane1.addTab(from.getUsername(), null,
+								new MessageBox(from), null);
 						box = findUserBox(from);
 					}
-					box.post(m);
+					jTabbedPane1
+							.setIconAt(
+									jTabbedPane1.indexOfComponent(box),
+									new javax.swing.ImageIcon(
+											getClass()
+													.getResource(
+															"/javax/swing/plaf/metal/icons/ocean/warning.png")));
 				}
+				box.post(m);
 			}
 		} catch (LoginException e) {
 			returnLogin();
@@ -133,6 +145,7 @@ public class ClientGUI extends javax.swing.JFrame {
 			returnLogin();
 		}
 	}
+
 	private MessageBox findUserBox(User user) {
 		for (Component c : jTabbedPane1.getComponents()) {
 			User boxUser = ((MessageBox) c).getUser();
@@ -142,10 +155,12 @@ public class ClientGUI extends javax.swing.JFrame {
 		}
 		return null;
 	}
+
 	public void setLoginDialog(LoginDialog loginDialog) {
 		this.loginDialog = loginDialog;
 	}
-	private void returnLogin(){
+
+	private void returnLogin() {
 		try {
 			handler.bye();
 		} catch (IOException e) {
@@ -156,6 +171,7 @@ public class ClientGUI extends javax.swing.JFrame {
 			loginDialog.setVisible(true);
 		}
 	}
+
 	//GEN-BEGIN:initComponents
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
@@ -188,8 +204,18 @@ public class ClientGUI extends javax.swing.JFrame {
 		setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 		setDefaultCloseOperation(3);
 		setResizable(false);
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosed(java.awt.event.WindowEvent evt) {
+				formWindowClosed(evt);
+			}
+		});
 
 		jTabbedPane1.setTabPlacement(3);
+		jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				jTabbedPane1MouseClicked(evt);
+			}
+		});
 
 		jScrollPane1.setMaximumSize(new java.awt.Dimension(37, 32767));
 		jScrollPane1.setMinimumSize(new java.awt.Dimension(37, 24));
@@ -429,6 +455,21 @@ public class ClientGUI extends javax.swing.JFrame {
 	}// </editor-fold>
 	//GEN-END:initComponents
 
+	private void formWindowClosed(java.awt.event.WindowEvent evt) {
+		try {
+			handler.bye();
+		} catch (IOException e1) {
+			// do nothing
+		} finally {
+			handler.close();
+		}
+		System.exit(0);
+	}
+
+	private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {
+		jTabbedPane1.setIconAt(jTabbedPane1.getSelectedIndex(), null);
+	}
+
 	private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {
 		jTextField1.setSelectionStart(0);
 		jTextField1.setSelectionEnd(jTextField1.getText().length());
@@ -472,6 +513,7 @@ public class ClientGUI extends javax.swing.JFrame {
 			handler.post(((MessageBox) jTabbedPane1.getSelectedComponent())
 					.getUser(), jEditorPane1.getText());
 			jEditorPane1.setText("");
+			jTabbedPane1.setIconAt(jTabbedPane1.getSelectedIndex(), null);
 		} catch (LoginException e) {
 			returnLogin();
 		} catch (IOException e) {
@@ -490,6 +532,8 @@ public class ClientGUI extends javax.swing.JFrame {
 		User selectedUser = (User) jList1.getSelectedValue();
 		if (null == selectedUser)
 			return;
+		if (handler.user().equals(selectedUser))
+			return;
 		boolean isDupl = false;
 		MessageBox box = null;
 		for (Component c : jTabbedPane1.getComponents()) {
@@ -505,6 +549,7 @@ public class ClientGUI extends javax.swing.JFrame {
 			jTabbedPane1.addTab(selectedUser.getUsername(), null, box, null);
 		}
 		jTabbedPane1.setSelectedComponent(box);
+		jTabbedPane1.setIconAt(jTabbedPane1.getSelectedIndex(), null);
 	}
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -547,8 +592,6 @@ public class ClientGUI extends javax.swing.JFrame {
 	private javax.swing.JMenuBar menuBar1;
 	private javax.swing.JMenuItem openMenuItem;
 	private javax.swing.JMenuItem openMenuItem1;
-
 	// End of variables declaration//GEN-END:variables
-
 
 }
