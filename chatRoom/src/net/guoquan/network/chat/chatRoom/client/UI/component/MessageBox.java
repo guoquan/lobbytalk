@@ -6,7 +6,10 @@
 
 package net.guoquan.network.chat.chatRoom.client.UI.component;
 
-import net.guoquan.network.chat.chatRoom.client.information.User;
+import javax.swing.text.BadLocationException;
+
+import net.guoquan.network.chat.chatRoom.client.context.Message;
+import net.guoquan.network.chat.chatRoom.client.context.User;
 
 /**
  *
@@ -34,6 +37,14 @@ public class MessageBox extends javax.swing.JPanel {
 		this.user = user;
 		this.closable = closable;
 		initComponents();
+	}
+	
+	public void post(Message message){
+		try {
+			jTextPane1.getDocument().insertString(0, "a", null);
+		} catch (BadLocationException e) {
+			// do nothing
+		}
 	}
 
 	//GEN-BEGIN:initComponents

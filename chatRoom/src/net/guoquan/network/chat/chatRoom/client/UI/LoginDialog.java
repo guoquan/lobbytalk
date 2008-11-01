@@ -8,7 +8,7 @@ package net.guoquan.network.chat.chatRoom.client.UI;
 
 import java.io.IOException;
 
-import net.guoquan.network.chat.chatRoom.client.ClientSession;
+import net.guoquan.network.chat.chatRoom.client.context.ClientSessionHandler;
 
 /**
  *
@@ -20,12 +20,13 @@ public class LoginDialog extends javax.swing.JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = -3040554067533465730L;
+	private ClientSessionHandler handler;
 
 	/** Creates new form LoginDialog */
 	public LoginDialog(java.awt.Frame parent, boolean modal,
-			ClientSession session) {
+			ClientSessionHandler handler) {
 		super(parent, modal);
-		this.session = session;
+		this.handler = handler;
 		initComponents();
 	}
 
@@ -190,7 +191,7 @@ public class LoginDialog extends javax.swing.JDialog {
 		new Thread() {
 			public void run() {
 				try {
-					if (0 != session.login(jTextField1.getText(), new String(
+					if (0 != handler.login(jTextField1.getText(), new String(
 							jPasswordField1.getPassword()))) {
 						getParent().setVisible(true);
 						setVisible(false);
@@ -238,5 +239,4 @@ public class LoginDialog extends javax.swing.JDialog {
 	private javax.swing.JProgressBar jProgressBar1;
 	private javax.swing.JTextField jTextField1;
 	// End of variables declaration//GEN-END:variables
-	private ClientSession session;
 }

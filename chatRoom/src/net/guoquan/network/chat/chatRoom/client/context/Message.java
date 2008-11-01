@@ -1,4 +1,4 @@
-package net.guoquan.network.chat.chatRoom.client.information;
+package net.guoquan.network.chat.chatRoom.client.context;
 
 import java.util.Date;
 
