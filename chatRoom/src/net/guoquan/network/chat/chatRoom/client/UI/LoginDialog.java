@@ -8,6 +8,8 @@ package net.guoquan.network.chat.chatRoom.client.UI;
 
 import java.io.IOException;
 
+import javax.security.auth.login.LoginException;
+
 import net.guoquan.network.chat.chatRoom.client.context.ClientSessionHandler;
 
 /**
@@ -54,6 +56,11 @@ public class LoginDialog extends javax.swing.JDialog {
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setResizable(false);
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosed(java.awt.event.WindowEvent evt) {
+				formWindowClosed(evt);
+			}
+		});
 
 		jLabel1.setText("Username: ");
 
@@ -183,6 +190,10 @@ public class LoginDialog extends javax.swing.JDialog {
 	}// </editor-fold>
 	//GEN-END:initComponents
 
+	private void formWindowClosed(java.awt.event.WindowEvent evt) {
+		System.exit(0);
+	}
+
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 		jProgressBar1.setIndeterminate(true);
 		jTextField1.setEnabled(false);
@@ -193,6 +204,17 @@ public class LoginDialog extends javax.swing.JDialog {
 				try {
 					if (0 != handler.login(jTextField1.getText(), new String(
 							jPasswordField1.getPassword()))) {
+						try {
+							handler.users();
+						} catch (LoginException e) {
+							try {
+								handler.bye();
+							} catch (IOException e1) {
+								// do nothing
+							} finally {
+								handler.close();
+							}
+						}
 						getParent().setVisible(true);
 						setVisible(false);
 					} else {

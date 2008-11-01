@@ -29,6 +29,10 @@ public class SessionContext implements Context{
 		if(null == message || null == from){
 			return false;
 		}
+		// to self
+		if(to.equals(from)){
+			return false;
+		}
 		// if broadcast
 		if(null == to){
 			for(Session s : sessions){

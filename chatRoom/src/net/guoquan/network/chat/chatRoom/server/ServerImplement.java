@@ -36,11 +36,17 @@ public class ServerImplement implements Server{
 		return true;
 	}
 
-	public boolean daemon() throws IOException {
+	public boolean daemon(){
+		logger.info("Start daemon.");
 		// do daemon
 		while (true) {
-			executor.execute(Handlers.newSocketRequestHandler(serverSocket
-					.accept(), context));
+			try {
+				executor.execute(Handlers.newSocketRequestHandler(serverSocket
+						.accept(), context));
+			} catch (IOException e) {
+				logger.info("Exception occured, check the network.");
+				logger.debug(null,e);
+			}
 		}
 	}
 
@@ -52,8 +58,20 @@ public class ServerImplement implements Server{
 		int port = 12345;
 		int poolSize = 10;
 		// get instance
-		Server server = new ServerImplement(port, poolSize);
-		// daemon 
-		server.daemon();
+		final Server server = new ServerImplement(port, poolSize);
+		// daemon
+		new Thread(){
+			public void run() {
+				server.daemon();
+			}
+		}.start();
+		while(true){
+			// TODO do some server runtime query here
+			break;
+		}
+	}
+
+	public Context getContext() {
+		return context;
 	}
 }
