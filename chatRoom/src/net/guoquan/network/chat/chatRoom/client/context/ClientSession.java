@@ -39,6 +39,7 @@ public class ClientSession implements Session {
 	private Socket getSocket() throws IOException{
 		if(null == socket){
 			socket = new Socket(host, port);
+			socket.setSoTimeout(timeout);
 		}
 		return socket;
 	}
