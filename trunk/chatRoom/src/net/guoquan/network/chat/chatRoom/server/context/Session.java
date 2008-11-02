@@ -44,18 +44,22 @@ public class Session {
 	}
 
 	public void close() {
-		try {
-			in.close();
-			out.close();
-			cs.close();
-		} catch (IOException e) {
-			// do nothing as we just need to drop the io
-		} finally {
-			in = null;
-			out = null;
-			cs = null;
 
-			isOpened = false;
+		while(!cs.isClosed())
+		{
+			try {
+				cs.close();
+				in.close();
+				out.close();
+			} catch (IOException e) {
+				// do nothing
+			} finally {
+				in = null;
+				out = null;
+				cs = null;
+
+				isOpened = false;
+			}
 		}
 	}
 
