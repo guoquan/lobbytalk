@@ -69,6 +69,10 @@ public class ClientSessionHandler implements Commands {
 		if (SENDDETAIL == reply) {
 			session.getOut().writeLong(null == user ? 0 : user.getUId());
 			session.getOut().writeUTFLine(message);
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+			}
 			return OK == session.getIn().readCommand();
 		} else if (AUTHORITYNEEDED == reply) {
 			throw new LoginException("Need login.");

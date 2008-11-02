@@ -520,18 +520,22 @@ public class ClientGUI extends javax.swing.JFrame {
 		new Thread() {
 			public void run() {
 				try {
+					jButton1.setEnabled(false);
+					jEditorPane1.setEnabled(false);
 					handler.post(((MessageBox) jTabbedPane1
 							.getSelectedComponent()).getUser(), jEditorPane1
 							.getText());
+					jEditorPane1.setText("");
+					jEditorPane1.setEnabled(true);
+					jButton1.setEnabled(true);
 				} catch (LoginException e) {
 					returnLogin();
 				} catch (IOException e) {
-					returnLogin();
+					if (!e.getMessage().equals("No such user!"))
+						returnLogin();
 				}
 			}
 		}.start();
-		jEditorPane1.setText("");
-		jTabbedPane1.setIconAt(jTabbedPane1.getSelectedIndex(), null);
 	}
 
 	private void jList1MouseClicked(java.awt.event.MouseEvent evt) {
