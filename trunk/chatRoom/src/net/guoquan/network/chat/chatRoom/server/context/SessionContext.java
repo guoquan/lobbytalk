@@ -124,4 +124,7 @@ public class SessionContext implements Context{
 		}
 		return null;
 	}
+	public Set<Session> sessions() {
+		return sessions;
+	}
 }

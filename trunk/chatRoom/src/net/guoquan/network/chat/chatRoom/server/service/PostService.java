@@ -17,13 +17,20 @@ public class PostService implements Service {
 		session.getOut().writeCommand(SENDDETAIL);
 		logger.debug("Send message detail.");
 		long toId = session.getIn().readLong();
-		User to = 0 == toId ? null : context.getSessionByUser(toId).getUser();
-		if(to == null && toId != 0){
-			session.getOut().writeCommand(NOSUCHUSER);
-			logger.info(session.getUser() + " failed to posted a message. Receiver not exist.");
-			return false;
-		}
 		String message = session.getIn().readUTFLine();
+		User to = null;
+		if(toId != 0){
+			Session s = context.getSessionByUser(toId);
+			if(null == s){
+				session.getOut().writeCommand(NOSUCHUSER);
+				logger.info(session.getUser() + " failed to posted a message. Receiver not exist.");
+				return false;
+			}else{
+				to = s.getUser();
+			}
+		}		
+		if(to == null && toId != 0){return false;
+		}
 		Message m = new Message(session.getUser(), to, new Date(), message);
 		if(context.post(m)){
 			logger.debug("[" + session.getUser().getUid() + "] to [" + toId + "] : {" + message + "}");

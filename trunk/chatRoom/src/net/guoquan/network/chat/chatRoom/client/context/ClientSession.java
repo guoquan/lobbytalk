@@ -3,6 +3,7 @@ package net.guoquan.network.chat.chatRoom.client.context;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import net.guoquan.network.chat.chatRoom.util.SocketReader;
 import net.guoquan.network.chat.chatRoom.util.SocketWriter;
@@ -78,6 +79,19 @@ public class ClientSession implements Session {
 		host = socket.getInetAddress();
 		port = socket.getPort();
 		timeout = socket.getSoTimeout();
+	}
+	public boolean connect(String host, int port) throws UnknownHostException, IOException {
+		if(isOpened()){
+			close();
+		}
+		socket = new Socket(host, port);
+		if(null != socket){
+			this.host = socket.getInetAddress();
+			this.port = socket.getPort();
+			socket.setSoTimeout(timeout);
+			return true;
+		}
+		return false;
 	}
 
 }
