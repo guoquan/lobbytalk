@@ -61,14 +61,7 @@ public class ServerImplement implements Server{
 	}
 
 	public boolean halt() {
-		serverRunning = false;
-		try {
-			serverSocket.close();
-		} catch (IOException e) {
-			// do nothing
-		} finally {
-			logger.info("Socket closed. Server halted.");
-		}
+		System.exit(0);
 		return true;
 		
 	}
@@ -81,7 +74,7 @@ public class ServerImplement implements Server{
 	
 	private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	private static final PrintStream out = System.out; 
-	public static void main(String args[]) throws IOException {
+	public static void main(String args[]) throws IOException, InterruptedException {
 		// initialise log4j configuration
 		PropertyConfigurator.configure("log4j.properties");
 		
@@ -131,8 +124,7 @@ public class ServerImplement implements Server{
 		// u - user list
 		// s - session list
 		while(serverCommand != 'q'){
-			while(!in.ready()){
-			}
+			Thread.sleep(200);
 			serverCommand = (char)in.read();
 			switch(serverCommand){
 			case 'q':
