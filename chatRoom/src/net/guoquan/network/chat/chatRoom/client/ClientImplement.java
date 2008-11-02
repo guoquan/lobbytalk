@@ -17,17 +17,14 @@ public class ClientImplement implements Client{
 	private Session session;
 	private ClientSessionHandler handler;
 	private Context context;
+	private static final int TIMEOUT = 60000;
 	
-	private final String host;
-	private final int port;
-	
-	public ClientImplement(String host, int port) throws UnknownHostException, IOException{
-		this.host = host;
-		this.port = port;
+	public ClientImplement() throws UnknownHostException, IOException{
 		initialise();
 	}
 	private boolean initialise() throws UnknownHostException, IOException{
-		socket = new Socket(host, port);
+		socket = new Socket();
+		socket.setSoTimeout(TIMEOUT);
 		session = new ClientSession(socket);
 		context = new ClientSessionContext(session);
 		handler = new ClientSessionHandler(session, context);
@@ -45,9 +42,7 @@ public class ClientImplement implements Client{
 		return true;
 	}
 	public static void main(String args[]) throws UnknownHostException, IOException{
-		String host = "127.0.0.1";
-		int port = 12345;
-		Client c = new ClientImplement(host, port);
+		Client c = new ClientImplement();
 		c.run();
 	}
 }

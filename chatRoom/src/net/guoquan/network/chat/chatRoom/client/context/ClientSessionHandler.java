@@ -19,6 +19,10 @@ public class ClientSessionHandler implements Commands {
 		this.context = context;
 	}
 
+	public synchronized boolean connect(String host, int port) throws IOException {
+		return session.connect(host, port);
+	}
+	
 	public synchronized boolean bye() throws IOException {
 		session.getOut().writeCommand(BYE);
 		return SBYE == session.getIn().readCommand();
@@ -68,6 +72,8 @@ public class ClientSessionHandler implements Commands {
 			return OK == session.getIn().readCommand();
 		} else if (AUTHORITYNEEDED == reply) {
 			throw new LoginException("Need login.");
+		} else if (NOSUCHUSER == reply) {
+			throw new IOException("No such user!");
 		} else {
 			throw new IOException("Unknown reply.");
 		}

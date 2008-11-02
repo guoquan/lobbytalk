@@ -155,6 +155,15 @@ public class ClientGUI extends javax.swing.JFrame {
 		}
 		return null;
 	}
+	private void closeFilter(){
+		filterOpen = false;
+		jTextField1.setForeground(Color.gray);
+		jTextField1.setText("Find out a friend!");
+	}
+	private void openFilter(){
+		filterOpen = true;
+		jTextField1.setForeground(Color.black);
+	}
 
 	public void setLoginDialog(LoginDialog loginDialog) {
 		this.loginDialog = loginDialog;
@@ -462,8 +471,8 @@ public class ClientGUI extends javax.swing.JFrame {
 			// do nothing
 		} finally {
 			handler.close();
+			System.exit(0);
 		}
-		System.exit(0);
 	}
 
 	private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {
@@ -475,19 +484,16 @@ public class ClientGUI extends javax.swing.JFrame {
 		jTextField1.setSelectionEnd(jTextField1.getText().length());
 		if (filterOpen == false) {
 			jTextField1.setText("");
-			filterOpen = true;
+			openFilter();
 		}
 		jTextField1.setForeground(Color.black);
 	}
 
 	private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {
 		if (jTextField1.getText().trim().equalsIgnoreCase("")) {
-			filterOpen = false;
-			jTextField1.setForeground(Color.gray);
-			jTextField1.setText("Find out a friend!");
+			closeFilter();
 		} else {
-			filterOpen = true;
-			jTextField1.setForeground(Color.black);
+			openFilter();
 		}
 		freshUserList();
 	}
@@ -498,34 +504,34 @@ public class ClientGUI extends javax.swing.JFrame {
 
 	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
 		if (jTextField1.getText().trim().equalsIgnoreCase("")) {
-			filterOpen = false;
-			jTextField1.setForeground(Color.gray);
-			jTextField1.setText("Find out a friend!");
+			closeFilter();
 		} else {
-			filterOpen = true;
-			jTextField1.setForeground(Color.black);
+			openFilter();
 		}
 		freshUserList();
-	}
-
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-		try {
-			handler.post(((MessageBox) jTabbedPane1.getSelectedComponent())
-					.getUser(), jEditorPane1.getText());
-			jEditorPane1.setText("");
-			jTabbedPane1.setIconAt(jTabbedPane1.getSelectedIndex(), null);
-		} catch (LoginException e) {
-			returnLogin();
-		} catch (IOException e) {
-			returnLogin();
-		}
 	}
 
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-		filterOpen = false;
-		jTextField1.setForeground(Color.gray);
-		jTextField1.setText("Find out a friend!");
+		closeFilter();
 		freshUserList();
+	}
+	
+	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+		new Thread() {
+			public void run() {
+				try {
+					handler.post(((MessageBox) jTabbedPane1
+							.getSelectedComponent()).getUser(), jEditorPane1
+							.getText());
+				} catch (LoginException e) {
+					returnLogin();
+				} catch (IOException e) {
+					returnLogin();
+				}
+			}
+		}.start();
+		jEditorPane1.setText("");
+		jTabbedPane1.setIconAt(jTabbedPane1.getSelectedIndex(), null);
 	}
 
 	private void jList1MouseClicked(java.awt.event.MouseEvent evt) {

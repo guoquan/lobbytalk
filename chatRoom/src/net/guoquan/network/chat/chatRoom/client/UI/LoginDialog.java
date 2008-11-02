@@ -13,8 +13,8 @@ import javax.security.auth.login.LoginException;
 import net.guoquan.network.chat.chatRoom.client.context.ClientSessionHandler;
 
 /**
- *
- * @author  __USER__
+ * 
+ * @author __USER__
  */
 public class LoginDialog extends javax.swing.JDialog {
 
@@ -40,7 +40,7 @@ public class LoginDialog extends javax.swing.JDialog {
 		return new String(jPasswordField1.getPassword());
 	}
 
-	//GEN-BEGIN:initComponents
+	// GEN-BEGIN:initComponents
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
 
@@ -51,6 +51,10 @@ public class LoginDialog extends javax.swing.JDialog {
 		jButton1 = new javax.swing.JButton();
 		jLabel3 = new javax.swing.JLabel();
 		jProgressBar1 = new javax.swing.JProgressBar();
+		jComboBox1 = new javax.swing.JComboBox();
+		jComboBox2 = new javax.swing.JComboBox();
+		jLabel4 = new javax.swing.JLabel();
+		jLabel5 = new javax.swing.JLabel();
 
 		setTitle("LobbyTalk Internet Chatting room");
 		setAlwaysOnTop(true);
@@ -79,6 +83,18 @@ public class LoginDialog extends javax.swing.JDialog {
 		jProgressBar1.setString("");
 		jProgressBar1.setStringPainted(true);
 
+		jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(
+				new String[] { "127.0.0.1" }));
+		jComboBox1.setEditable(true);
+
+		jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(
+				new String[] { "12345" }));
+		jComboBox2.setEditable(true);
+
+		jLabel4.setText(":");
+
+		jLabel5.setText("Server:");
+
 		org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(
 				getContentPane());
 		getContentPane().setLayout(layout);
@@ -92,50 +108,64 @@ public class LoginDialog extends javax.swing.JDialog {
 										.createSequentialGroup()
 										.addContainerGap()
 										.add(
+												jProgressBar1,
+												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+												246, Short.MAX_VALUE)
+										.addPreferredGap(
+												org.jdesktop.layout.LayoutStyle.RELATED)
+										.add(jButton1).addContainerGap())
+						.add(jLabel3,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								331, Short.MAX_VALUE)
+						.add(
+								layout
+										.createSequentialGroup()
+										.addContainerGap()
+										.add(
 												layout
 														.createParallelGroup(
-																org.jdesktop.layout.GroupLayout.TRAILING)
+																org.jdesktop.layout.GroupLayout.LEADING)
+														.add(jLabel1).add(
+																jLabel2).add(
+																jLabel5))
+										.addPreferredGap(
+												org.jdesktop.layout.LayoutStyle.RELATED)
+										.add(
+												layout
+														.createParallelGroup(
+																org.jdesktop.layout.GroupLayout.LEADING)
 														.add(
-																org.jdesktop.layout.GroupLayout.LEADING,
 																layout
 																		.createSequentialGroup()
 																		.add(
-																				jLabel1)
+																				jComboBox1,
+																				org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+																				168,
+																				org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
 																		.addPreferredGap(
 																				org.jdesktop.layout.LayoutStyle.RELATED)
 																		.add(
-																				jTextField1,
-																				org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-																				252,
+																				jLabel4)
+																		.addPreferredGap(
+																				org.jdesktop.layout.LayoutStyle.RELATED)
+																		.add(
+																				jComboBox2,
+																				0,
+																				72,
 																				Short.MAX_VALUE))
 														.add(
-																org.jdesktop.layout.GroupLayout.LEADING,
-																layout
-																		.createSequentialGroup()
-																		.add(
-																				jLabel2)
-																		.addPreferredGap(
-																				org.jdesktop.layout.LayoutStyle.RELATED)
-																		.add(
-																				jPasswordField1,
-																				org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-																				254,
-																				Short.MAX_VALUE))
+																org.jdesktop.layout.GroupLayout.TRAILING,
+																jTextField1,
+																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+																252,
+																Short.MAX_VALUE)
 														.add(
-																layout
-																		.createSequentialGroup()
-																		.add(
-																				jProgressBar1,
-																				org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-																				246,
-																				Short.MAX_VALUE)
-																		.addPreferredGap(
-																				org.jdesktop.layout.LayoutStyle.RELATED)
-																		.add(
-																				jButton1)))
-										.addContainerGap()).add(jLabel3,
-								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-								331, Short.MAX_VALUE));
+																org.jdesktop.layout.GroupLayout.TRAILING,
+																jPasswordField1,
+																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+																252,
+																Short.MAX_VALUE))
+										.addContainerGap()));
 		layout
 				.setVerticalGroup(layout
 						.createParallelGroup(
@@ -147,7 +177,25 @@ public class LoginDialog extends javax.swing.JDialog {
 										.add(
 												jLabel3,
 												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												68, Short.MAX_VALUE)
+												89, Short.MAX_VALUE)
+										.addPreferredGap(
+												org.jdesktop.layout.LayoutStyle.RELATED)
+										.add(
+												layout
+														.createParallelGroup(
+																org.jdesktop.layout.GroupLayout.BASELINE)
+														.add(jLabel5)
+														.add(
+																jComboBox1,
+																org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+																org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+														.add(jLabel4)
+														.add(
+																jComboBox2,
+																org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+																org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
 										.addPreferredGap(
 												org.jdesktop.layout.LayoutStyle.RELATED)
 										.add(
@@ -177,33 +225,46 @@ public class LoginDialog extends javax.swing.JDialog {
 										.add(
 												layout
 														.createParallelGroup(
-																org.jdesktop.layout.GroupLayout.TRAILING)
+																org.jdesktop.layout.GroupLayout.TRAILING,
+																false)
 														.add(
 																jProgressBar1,
 																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-																23,
+																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
 																Short.MAX_VALUE)
-														.add(jButton1))
+														.add(
+																jButton1,
+																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+																org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+																Short.MAX_VALUE))
 										.addContainerGap()));
 
 		pack();
 	}// </editor-fold>
-	//GEN-END:initComponents
+
+	// GEN-END:initComponents
 
 	private void formWindowClosed(java.awt.event.WindowEvent evt) {
 		System.exit(0);
 	}
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-		jProgressBar1.setIndeterminate(true);
-		jTextField1.setEnabled(false);
-		jProgressBar1.setEnabled(false);
-		jButton1.setEnabled(false);
+
 		new Thread() {
 			public void run() {
+				jProgressBar1.setIndeterminate(true);
+				jTextField1.setEnabled(false);
+				jPasswordField1.setEnabled(false);
+				jButton1.setEnabled(false);
+				jComboBox1.setEnabled(false);
+				jComboBox2.setEnabled(false);
 				try {
-					if (0 != handler.login(jTextField1.getText(), new String(
-							jPasswordField1.getPassword()))) {
+					boolean con = handler.connect(
+							jComboBox1.getSelectedItem().toString(), Integer
+									.parseInt(jComboBox2.getSelectedItem()
+											.toString()));
+					if (con && 0 != handler.login(jTextField1.getText(),
+									new String(jPasswordField1.getPassword()))) {
 						try {
 							handler.users();
 						} catch (LoginException e) {
@@ -226,15 +287,18 @@ public class LoginDialog extends javax.swing.JDialog {
 				} finally {
 					jProgressBar1.setIndeterminate(false);
 					jTextField1.setEnabled(true);
-					jProgressBar1.setEnabled(true);
+					jPasswordField1.setEnabled(true);
 					jButton1.setEnabled(true);
+					jComboBox1.setEnabled(true);
+					jComboBox2.setEnabled(true);
 				}
 			}
 		}.start();
 	}
 
 	/**
-	 * @param args the command line arguments
+	 * @param args
+	 *            the command line arguments
 	 */
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
@@ -251,12 +315,16 @@ public class LoginDialog extends javax.swing.JDialog {
 		});
 	}
 
-	//GEN-BEGIN:variables
+	// GEN-BEGIN:variables
 	// Variables declaration - do not modify
 	private javax.swing.JButton jButton1;
+	private javax.swing.JComboBox jComboBox1;
+	private javax.swing.JComboBox jComboBox2;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;
+	private javax.swing.JLabel jLabel4;
+	private javax.swing.JLabel jLabel5;
 	private javax.swing.JPasswordField jPasswordField1;
 	private javax.swing.JProgressBar jProgressBar1;
 	private javax.swing.JTextField jTextField1;
