@@ -80,6 +80,7 @@ public class ClientSession implements Session {
 		port = socket.getPort();
 		timeout = socket.getSoTimeout();
 	}
+	
 	public boolean connect(String host, int port) throws UnknownHostException, IOException {
 		if(isOpened()){
 			close();

@@ -29,7 +29,8 @@ public class PostService implements Service {
 				to = s.getUser();
 			}
 		}		
-		if(to == null && toId != 0){return false;
+		if(to == null && toId != 0){
+			return false;
 		}
 		Message m = new Message(session.getUser(), to, new Date(), message);
 		if(context.post(m)){
