@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="GBK"?>
+<jardesc>
+<jar path="F:/Documents/Desktop/client.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/chatRoom/ClientDescription.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+<storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+<selectedProjects/>
+<manifest generateManifest="false" mainClassHandleIdentifier="=chatRoom/src&lt;net.guoquan.network.chat.chatRoom.client{ClientImplement.java[ClientImplement" manifestLocation="/chatRoom/CLIENTMANIFEST.MF" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+<sealing sealJar="true">
+<packagesToSeal/>
+<packagesToUnSeal/>
+</sealing>
+</manifest>
+<selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+<javaElement handleIdentifier="=chatRoom/src&lt;net.guoquan.network.chat.chatRoom.client.UI"/>
+<javaElement handleIdentifier="=chatRoom/src&lt;net.guoquan.network.chat.chatRoom.util"/>
+<javaElement handleIdentifier="=chatRoom/src&lt;net.guoquan.network.chat.chatRoom.client.context"/>
+<javaElement handleIdentifier="=chatRoom/src&lt;net.guoquan.network.chat.chatRoom.client"/>
+<javaElement handleIdentifier="=chatRoom/src&lt;net.guoquan.network.chat.chatRoom.client.UI.component"/>
+<javaElement handleIdentifier="=chatRoom/src&lt;net.guoquan.network.chat.chatRoom.client.resource"/>
+</selectedElements>
+</jardesc>

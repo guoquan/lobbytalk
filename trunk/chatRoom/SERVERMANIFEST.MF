@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Sealed: true
+Main-Class: net.guoquan.network.chat.chatRoom.server.ServerImplement
+Class-Path: lib/log4j.jar
+

@@ -29,17 +29,18 @@ public class SessionContext implements Context{
 		if(null == message || null == from){
 			return false;
 		}
-		// to self
-		if(to.equals(from)){
-			return false;
-		}
 		// if broadcast
 		if(null == to){
 			for(Session s : sessions){
 				s.getMessages().add(message);
 			}
 			return true;
+		}
+		// to self
+		if(to.equals(from)){
+			return false;
 		}else{
+			// normal
 			for(Session s : sessions){
 				if(from.equals(s.getUser()) || to.equals(s.getUser()))
 					s.getMessages().add(message);

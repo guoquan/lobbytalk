@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Sealed: true
+Main-Class: net.guoquan.network.chat.chatRoom.client.ClientImplement
+Class-Path: lib/swing-layout.jar lib/AbsoluteLayout.jar
+
